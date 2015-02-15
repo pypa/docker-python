@@ -1,23 +1,29 @@
-#!/bin/sh
+#!/bin/bash
 
-function retry()
-{
-        local n=0
-        local try=$1
-        local cmd="${@: 2}"
-        [[ $# -le 1 ]] && {
-        echo "Usage $0 <retry_number> <Command>"; }
+ANSI_RED="\033[31;1m"
+ANSI_GREEN="\033[32;1m"
+ANSI_RESET="\033[0m"
+ANSI_CLEAR="\033[0K"
 
-        until [[ $n -ge $try ]]
-        do
-                $cmd && break || {
-                        echo "Command Fail.."
-                        ((n++))
-                        echo "retry $n ::"
-                        sleep 1;
-                        }
+retry() {
+  local result=0
+  local count=1
+  while [ $count -le 3 ]; do
+    [ $result -ne 0 ] && {
+      echo -e "\n${ANSI_RED}The command \"$@\" failed. Retrying, $count of 3.${ANSI_RESET}\n" >&2
+    }
+    "$@"
+    result=$?
+    [ $result -eq 0 ] && break
+    count=$(($count + 1))
+    sleep 1
+  done
 
-        done
+  [ $count -gt 3 ] && {
+    echo -e "\n${ANSI_RED}The command \"$@\" failed 3 times.${ANSI_RESET}\n" >&2
+  }
+
+  return $result
 }
 
 retry $*
