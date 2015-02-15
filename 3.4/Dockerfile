@@ -8,6 +8,9 @@ ENV LANG C.UTF-8
 # Copy over our retry.sh
 COPY retry.sh /usr/local/bin/
 
+# We want to make sure all of our dependencies are updated
+RUN apk update && apk upgrade
+
 # Install our dependencies for Python itself.
 RUN set -x \
     && apk-install openssl
