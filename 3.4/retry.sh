@@ -8,9 +8,9 @@ ANSI_CLEAR="\033[0K"
 retry() {
   local result=0
   local count=1
-  while [ $count -le 3 ]; do
+  while [ $count -le 10 ]; do
     [ $result -ne 0 ] && {
-      echo -e "\n${ANSI_RED}The command \"$@\" failed. Retrying, $count of 3.${ANSI_RESET}\n" >&2
+      echo -e "\n${ANSI_RED}The command \"$@\" failed. Retrying, $count of 10.${ANSI_RESET}\n" >&2
     }
     "$@"
     result=$?
