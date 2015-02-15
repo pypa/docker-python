@@ -19,8 +19,8 @@ retry() {
     sleep 1
   done
 
-  [ $count -gt 3 ] && {
-    echo -e "\n${ANSI_RED}The command \"$@\" failed 3 times.${ANSI_RESET}\n" >&2
+  [ $count -gt 10 ] && {
+    echo -e "\n${ANSI_RED}The command \"$@\" failed 10 times.${ANSI_RESET}\n" >&2
   }
 
   return $result
